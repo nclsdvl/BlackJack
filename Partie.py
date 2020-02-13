@@ -6,6 +6,7 @@ Created on Sat Feb  8 06:52:43 2020
 """
 
 import sys
+import time
 from Joueur import Joueur
 from Croupier import Croupier
 
@@ -86,6 +87,9 @@ class Partie:
                             bonneEntree = False
                             a=""
                             while bonneEntree == False :
+                                print("rappel "+ joueur.nom +" votre main = "+str(joueur.main))
+                                print("valeur de la main = "+str(joueur.valeurMain) + " VS valeur du croupier = " + str(croupier.valeurMain))
+                                time.sleep(2)
                                 a = input( joueur.nom + " voulez vous tirez une nouvelle carte (o ou n) : ")
                                 if a=="n":
                                     joueur.setStatut("stop")
@@ -102,9 +106,8 @@ class Partie:
                     
                     endGame = checkEndGame(self.liste_de_joueur, croupier)
                     
-                    while croupier.valeurMain < 17 and endGame == True:                
-                        croupier.tirer_1_carte(croupier, croupier.jeu)
-                    
+
+                                   
                 input_rejouer = input("voulez-vous rejouer ? (o pour oui, n pour non) ")
                 bonChoix = False
                 
@@ -176,6 +179,7 @@ def checkScore(listeJoueur):
 checkEndGame (liste_de_joueur, croupier) --> True si la partie est fini sinon False 
 ==> met a jour les statuts joueurs ("stop" s'il ne veulent plus tirer de carte sinon "encore")
 ==> si tous les joueurs ne sont plus à "encore" => la partie est finie
+                                                => tirage final de cartes pour le croupier si < 18
                                                 => affichage des cartes et score du croupier
                                                 => affichage des scores des joueurs et de leur gain
                                                 => mise à jour de l'argent des joueurs
@@ -188,20 +192,31 @@ def checkEndGame(listeJoueur, croupier):
             compteur += 1
     
     if compteur == len(listeJoueur):
-        print("la partie est finie !")
+        print("\n\nla partie est finie !")
+        
+        time.sleep(2)
+        while croupier.valeurMain < 17 :                
+            croupier.tirer_1_carte(croupier, croupier.jeu)
+        time.sleep(2)
         print("le croupier a pour carte : " +str(croupier.main))
-        print("le croupier a pour score : "+str(croupier.valeurMain))
+        print("le croupier a pour score : "+str(croupier.valeurMain) +"\n")
+            
+        if croupier.valeurMain > 21 :
+            croupier.valeurMain = -1
+        
+        
         for joueur in listeJoueur:
+            time.sleep(2)
             print(joueur.nom + " a pour score " + str(joueur.valeurMain))
             if joueur.valeurMain > croupier.valeurMain and joueur.valeurMain < 22:
-                print(joueur.nom + " a gagné " + str(joueur.mise * 2))
+                print(joueur.nom + " a gagné " + str(joueur.mise * 2) +"\n")
                 joueur.setArgent(joueur.mise * 2)
                 print(joueur.nom + " à maintenant "+ str(joueur.argent))
             elif joueur.valeurMain == croupier.valeurMain and joueur.valeurMain < 22:
-                print("égalité : " + joueur.nom + " récupere sa mise")
+                print("égalité : " + joueur.nom + " récupere sa mise il dispose maintenant de "+ str(joueur.argent)+ "\n")
                 joueur.setArgent(joueur.mise)
             else :
-                print(joueur.nom + " a perdu ! Il lui reste : "+ str(joueur.argent))
+                print(joueur.nom + " a perdu ! Il lui reste : "+ str(joueur.argent) +"\n")
         
         reinitialisationStatut(listeJoueur)
         return True
@@ -245,6 +260,10 @@ def removeJoueur (self, liste_de_joueur):
         if joueur.argent <= 0 :
             self.liste_de_joueur.remove(joueur)
             print("le joueur : " + joueur.nom + " quitte la table il n'a plus d'argent...")
+    if liste_de_joueur == [] : 
+        print("il n'y a plus de joueur... Le casino ferme ses portes\n\n\n")
+        time.sleep(3)
+        sys.exit()
 
 # reinitialise les joueur.statut a "encore" avant de reprendre une partie
 def reinitialisationStatut(liste_de_joueur):

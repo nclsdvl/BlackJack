@@ -22,13 +22,13 @@ class Croupier():
         self.main = Main(main)
         self.valeurMain = valeur1 + valeur2
         print("\nle croupier a en main : " + str(self.main.contenu[0]))
-        print("valeur de la main : " + str(valeur1))
+        print("valeur de la main : " + str(valeur1)+"\n")
         
     def ajoutCarte (self, carte, valeur):
         self.valeurMain += valeur
         self.main.ajoutCarte(carte)
-        print("\n Le croupier a maintenant en main : " + str(self.main.contenu)+"\n")
-        print("valeur de la main : " + str(self.valeurMain))            
+        print("Le croupier a maintenant en main : " + str(self.main.contenu)+"\n")
+        print("valeur de la main : " + str(self.valeurMain) +"\n")            
 
     def distribuerPremiereMain(self, joueurs):
         
@@ -41,10 +41,12 @@ class Croupier():
         carte_1_joueur = random.choice(list(jeu.monJeu.keys()))
         valeur1 = jeu.monJeu[carte_1_joueur]
         del jeu.monJeu[carte_1_joueur]
+        if str(type(joueur)) == "<class 'Croupier.Croupier'>":
+            print("le croupier tire la carte : " + str(carte_1_joueur))
+        
         joueur.ajoutCarte(carte_1_joueur, valeur1)  
         
-        if str(type(joueur)) == "<class 'Croupier.Croupier'>":
-            print("le joueur tire la carte : " + str(carte_1_joueur))
+
     
     
 
