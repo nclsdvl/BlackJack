@@ -17,10 +17,12 @@ class Croupier():
         self.jeu = Jeu()
         self.main = {}
         self.valeurMain = 0
+        self.valeurVisible = 0
         
     def setMain(self, main, valeur1, valeur2):
         self.main = Main(main)
         self.valeurMain = valeur1 + valeur2
+        self.valeurVisible = valeur1
         print("\nle croupier a en main : " + str(self.main.contenu[0]))
         print("valeur de la main : " + str(valeur1)+"\n")
         

@@ -40,7 +40,7 @@ class Joueur:
                 self.nom, self.argent, self.main, self.valeurMain, self.statut)
     
     def ajoutCarte (self, carte, valeur):
-        print(type(carte))
+
         
         if (self.valeurMain + valeur) > 21 and carte[0] == "As" :
             self.valeurMain +=1

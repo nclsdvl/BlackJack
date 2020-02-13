@@ -23,9 +23,9 @@ class Partie:
     
     
     TODO / BUG :
-        --> gestion de la valeur de l'as lorsque le total depasse 21
         
-        PROBLEME  --> verifier à quel moment le croupier tire des cartes... ligne 105
+        
+        --> remove joueur ne check pas tous les jouer???????? (l 258)
             
 
             
@@ -88,7 +88,7 @@ class Partie:
                             a=""
                             while bonneEntree == False :
                                 print("rappel "+ joueur.nom +" votre main = "+str(joueur.main))
-                                print("valeur de la main = "+str(joueur.valeurMain) + " VS valeur du croupier = " + str(croupier.valeurMain))
+                                print("valeur de la main = "+str(joueur.valeurMain) + " VS valeur du croupier = " + str(croupier.valeurVisible))
                                 time.sleep(2)
                                 a = input( joueur.nom + " voulez vous tirez une nouvelle carte (o ou n) : ")
                                 if a=="n":
@@ -112,11 +112,12 @@ class Partie:
                 bonChoix = False
                 
 
-                removeJoueur (self, self.liste_de_joueur)
+                
 
                 
                 while bonChoix == False :
                     if input_rejouer == "o":
+                        removeJoueur (self.liste_de_joueur)
                         bonChoix = True
                         rejouer = True
                     elif input_rejouer == "n":
@@ -194,7 +195,6 @@ def checkEndGame(listeJoueur, croupier):
     if compteur == len(listeJoueur):
         print("\n\nla partie est finie !")
         
-        time.sleep(2)
         while croupier.valeurMain < 17 :                
             croupier.tirer_1_carte(croupier, croupier.jeu)
         time.sleep(2)
@@ -255,10 +255,11 @@ def miser(liste_de_joueur):
 removeJoueur(partie, liste_de_joueur)
     => verifie que les joueurs ont encore de l'argent avant de recommencer une partie
 """       
-def removeJoueur (self, liste_de_joueur):
+def removeJoueur (liste_de_joueur):
     for joueur in liste_de_joueur:
+        print(joueur.nom)
         if joueur.argent <= 0 :
-            self.liste_de_joueur.remove(joueur)
+            liste_de_joueur.remove(joueur)
             print("le joueur : " + joueur.nom + " quitte la table il n'a plus d'argent...")
     if liste_de_joueur == [] : 
         print("il n'y a plus de joueur... Le casino ferme ses portes\n\n\n")
